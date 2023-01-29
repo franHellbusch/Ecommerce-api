@@ -1,5 +1,5 @@
 const request = require('supertest')
-const {app} = require('../src/app.init')
+const {app} = require('../src/api/app.init')
 const status = require('http-status')
 
 describe('Server running test', () => {
