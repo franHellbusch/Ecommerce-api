@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const {app} = require('../../src/app.init')
+const {app} = require('../../src/api/app.init')
 
 describe('App initialization', () => {
     let server
