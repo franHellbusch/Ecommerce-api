@@ -6,7 +6,8 @@
   "scripts": {
     "test": "set NODE_ENV='test' && jest --coverage",
     "start": "node src/index.js",
-    "start:dev": "nodemon index.js"
+    "start:dev": "nodemon index.js",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
