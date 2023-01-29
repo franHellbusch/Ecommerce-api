@@ -4,9 +4,9 @@
   "description": "- **Node JS**\r     - [Documentation](https://nodejs.org/es/docs/)\r - **Express JS**\r     - [Documentation](https://expressjs.com/es/starter/installing.html)\r - **Mongoose**\r     - [documentation](https://mongoosejs.com/docs/guide.html)\r - **EJS**\r     - [documentation](https://ejs.co/#docs)\r - Fo testing - **Jest**\r     - [documentation](https://jestjs.io/)",
   "main": "index.js",
   "scripts": {
-    "test": "set NODE_ENV='test' && jest --coverage",
-    "start": "node src/index.js",
-    "start:dev": "nodemon index.js",
+    "test": "set NODE_ENV=test&& jest --coverage",
+    "start": "npm run test && node src/index.js",
+    "start:dev": "nodemon src/index.js",
     "prepare": "husky install"
   },
   "repository": {
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/franHellbusch/Ecommerce-api#readme",
   "devDependencies": {
+    "@types/jest": "^29.4.0",
     "husky": "^8.0.3",
     "nodemon": "^2.0.20"
   },

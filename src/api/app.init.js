@@ -7,5 +7,6 @@ const createApp = () => {
 }
 
 module.exports = {
-    app: createApp()
+    app: createApp(),
+    createApp
 }
