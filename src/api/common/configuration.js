@@ -8,7 +8,7 @@ const configuration = {
         apiVersion: 'api/v1',
         greeting: () => `Server up and running in port: ${configuration.globals.port}`
     },
-    morgan: 'dev',
+    morgan: 'tiny',
     session: {}
 }
 
