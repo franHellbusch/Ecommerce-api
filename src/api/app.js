@@ -1,6 +1,7 @@
 const express = require('express');
 const { createServer } = require('http');
 const configuration = require('./common/configuration');
+const logger = require('./middlewares/loggers/winston')
 
 class App {
     constructor(routes = [], middlewares = []) {
@@ -15,7 +16,7 @@ class App {
 
     listen() {
         return this.server.listen(this.port, () => {
-            console.info(configuration.api.greeting());
+            logger.info(configuration.api.greeting());
         });
     }
 
