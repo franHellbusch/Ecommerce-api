@@ -1,12 +1,14 @@
 require('dotenv').config()
 
 const App = require('./app')
+const express = require('express')
+const HealthCheck = require('./controllers/healthCheck')
 const morgan = require('./middlewares/loggers/morgan')
 
 const createApp = () => {
     return new App(
-        routes = [],
-        middlewares = [ morgan() ]
+        routes = [new HealthCheck('/health')],
+        middlewares = [ express.json(), morgan() ]
     )
 }
 
