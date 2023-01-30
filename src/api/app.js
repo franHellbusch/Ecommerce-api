@@ -3,19 +3,19 @@ const { createServer } = require('http');
 const configuration = require('./common/configuration');
 
 class App {
-    constructor(routes = [], middlewares = [], viewEngine = { viewsDir: '../views', engine: 'ejs' }) {
+    constructor(routes = [], middlewares = []) {
         this.app = express();
         this.server = createServer(this.app);
         this.port = configuration.globals.port;
 
-        this.routes(routes);
         this.middlewares(middlewares);
-        this.setViewEngine(viewEngine);
+        this.routes(routes);
+        this.setViewEngine();
     }
 
     listen() {
         return this.server.listen(this.port, () => {
-            console.log(configuration.api.greeting());
+            console.info(configuration.api.greeting());
         });
     }
 
@@ -24,16 +24,16 @@ class App {
             this.app.use(configuration.api.apiVersion, controller.router)
         })
     }
-
+    
     middlewares(middlewares = []) {
         middlewares.forEach(middleware => {
             this.app.use(middleware)
         })
     }
 
-    setViewEngine({ viewsDir, engine }) {
-        this.app.set('views', viewsDir)
-        this.app.set('view engine', engine)
+    setViewEngine() {
+        this.app.set('views', configuration.views.viewsDir)
+        this.app.set('view engine', configuration.views.viewEngine)
     }
 }
 

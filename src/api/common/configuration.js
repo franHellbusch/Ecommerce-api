@@ -5,8 +5,12 @@ const configuration = {
         port: process.env.PORT || 8080
     },
     api: {
-        apiVersion: 'api/v1',
-        greeting: () => `Server up and running in port: ${configuration.globals.port}`
+        greeting: () => `Server up and running in port: ${configuration.globals.port}`,
+        apiVersion: '/api/v1',
+    },
+    views: {
+        viewsDir: '/src/views',
+        viewEngine: 'ejs'
     },
     morgan: 'tiny',
     session: {}

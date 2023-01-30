@@ -1,7 +1,6 @@
 require('dotenv').config()
 
 const {app, createApp} = require('../../src/api/app.init')
-const App = require('../../src/api/app')
 
 describe('App config', () => {
     let server
