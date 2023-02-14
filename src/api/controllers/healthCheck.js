@@ -1,8 +1,7 @@
-const express = require('express');
 const configuration = require('../common/configuration');
 const httpStatus = require('http-status');
 const { createError } = require('../common/httpError');
-const BaseController = require('../containers/controller.container');
+const BaseController = require('../containers/BaseController');
 
 class HealthCheck extends BaseController {
     constructor(path, service) {
@@ -24,7 +23,7 @@ class HealthCheck extends BaseController {
                 message: httpStatus['200_MESSAGE']
             })
         } catch (error) {
-            next(createError(error, 400))
+            next(createError(error))
         }
     }
 }
