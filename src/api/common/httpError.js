@@ -19,6 +19,8 @@ function createError(err, sts) {
     const message = err.message || httpStatus[status]
     const stack = err.stack ? err.stack.split("\n")[1] : 'unknown path error';
 
+    if (err instanceof HttpError) return err
+
     if (err instanceof Error) {
         const genericError = {
             message,

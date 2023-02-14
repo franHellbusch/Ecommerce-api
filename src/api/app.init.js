@@ -5,17 +5,26 @@ const express = require('express')
 const HealthCheck = require('./controllers/healthCheck')
 const morgan = require('./middlewares/loggers/morgan')
 const errorHandler = require('./middlewares/errorHandler')
-const MongoConnect = require('./common/db/connect')
-const { logger } = require('./middlewares/loggers/winston')
+const session = require('express-session')
+const sessionConfig = require('./common/session.config')
+const passportService = require('./services/auth.service')
+const passport = require('passport')
+const AuthController = require('./controllers/AuthController')
 
 const createApp = () => {
-    MongoConnect()
-    .then(() => logger.info('MongoDB connection established'))
-    .catch((err) => logger.fatal(err))
-
     return new App({
-        routes: [new HealthCheck('/health', 'api-health')],
-        middlewares: [express.json(), morgan()],
+        routes: [
+            new HealthCheck('/health', 'api-health'),
+            new AuthController('/auth', 'api-auth')
+        ],
+        middlewares: [
+            express.json(),
+            morgan(),
+            session(sessionConfig),
+            passport.initialize(),
+            passport.session(),
+        ],
+        passportService,
         errorHandler
     })
 }

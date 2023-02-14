@@ -1,3 +1,4 @@
+const { HttpError, createError } = require("../common/httpError");
 const logger = require("./loggers/winston");
 
 const errorHandler = (err, _req, res, _next) => {

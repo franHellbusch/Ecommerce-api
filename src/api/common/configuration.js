@@ -19,7 +19,15 @@ const configuration = {
     },
     morgan: 'tiny',
     winston: WinstonConfig,
-    session: {}
+    session: {
+        secret: process.env.SECRET || 'sh',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: false,
+            secure: false
+        }
+    }
 }
 
 module.exports = configuration
