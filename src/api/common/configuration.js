@@ -14,8 +14,9 @@ const configuration = {
         apiVersion: '/api/v1',
     },
     views: {
-        viewsDir: '/src/views',
-        viewEngine: 'ejs'
+        viewsDir: 'src/views',
+        viewEngine: 'ejs',
+        staticDir: 'src/views/js'
     },
     morgan: 'tiny',
     winston: WinstonConfig,

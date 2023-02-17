@@ -9,16 +9,15 @@ const passportService = () => {
     passport.use('login', new LocalStrategy({
         usernameField: 'email'
     }, async (email, password, done) => {
-        if (!email || !password) {
-            return done(null, false, { message: 'Bad Request' });
-        }
-
+        if (!email.includes('@') || !email.includes('.')) return done({ message: 'Invalid email, please enter a valid one', status: 400 }, false);
+        if (password.length < 8) return done({ message: 'Invalid password, must be at least 8 characters', status: 400 }, false);
+        
         const findUser = await UserModel.findOne({ email });
 
-        if (!findUser) return done(null, false);
+        if (!findUser) return done({ message: 'Invalid credentials', status: 400 }, false);
 
         const isMatch = await bcrypt.compare(password, findUser.password)
-        if (!isMatch) return done(null, false);
+        if (!isMatch) return done({ message: 'Invalid credentials', status: 400  }, false);
 
         done(null, findUser)
     }))
@@ -26,11 +25,15 @@ const passportService = () => {
     passport.use('register', new LocalStrategy({
         usernameField: 'email',
         passReqToCallback: true
-    }, async (req, email, _password, done) => {
+    }, async (req, email, password, done) => {
         try {
+            console.log(email, password);
+            if (!email.includes('@') || !email.includes('.')) return done({ message: 'Invalid email, please enter a valid one', status: 400 }, false);
+            if (password.length < 8) return done({ message: 'Invalid password, must be at least 8 characters', status: 400 }, false);
+
             const findUser = await UserModel.findOne({ email });
 
-            if (findUser) return done(null, false, { message: 'User already exist' })
+            if (findUser) return done({ message:'User already exist', status: 409 }, false)
 
             const user = await userService.save(req.body)
             done(null, user)

@@ -1,10 +1,9 @@
 const passport = require("passport");
 const { createError } = require("../common/httpError");
 const BaseController = require("../containers/BaseController");
-const UserDto = require("../dtos/user.dto");
 
 class AuthController extends BaseController {
-    constructor (path, service) {
+    constructor(path, service) {
         super(path, service);
 
         this.initRoutes()
@@ -12,33 +11,33 @@ class AuthController extends BaseController {
     }
 
     initRoutes() {
-        this.router.post(`${this.path}/login`, passport.authenticate('login', { failWithError: true }), this.login)
-        this.router.post(`${this.path}/register`, passport.authenticate('register', { failWithError: true }), this.register)
+        this.router.post(`${this.path}/login`, this.login)
+        this.router.post(`${this.path}/register`, this.register)
         this.router.post(`${this.path}/logout`, this.logout)
     }
 
     async login(req, res, next) {
-        try {
-            const userDto = new UserDto(req.user).createDto()
-            res.status(200).json({
-                success: true,
-                user: userDto
-            })
-        } catch (err) {
-            next(createError(err))
-        }
+        passport.authenticate('login', (err, user, info) => {
+            if (err) {
+                return next(createError(err, err.status));
+            }
+            if (!user) {
+                return next(createError(info, 400));
+            }
+            res.redirect('/')
+        })(req, res, next);
     }
 
     async register(req, res, next) {
-        try {
-            const userDto = new UserDto(req.user).createDto()
-            res.status(201).json({
-                success: true,
-                user: userDto
-            })
-        } catch (err) {
-            next(createError(err))
-        }
+        passport.authenticate('register', (err, user, info) => {
+            if (err) {
+                return next(createError(err, err.status));
+            }
+            if (!user) {
+                return next(createError(info, 400));
+            }
+            res.redirect('/')
+        })(req, res, next);
     }
 
     async logout(req, res, next) {

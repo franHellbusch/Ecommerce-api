@@ -10,6 +10,7 @@ const sessionConfig = require('./common/session.config')
 const passportService = require('./services/auth.service')
 const passport = require('passport')
 const AuthController = require('./controllers/AuthController')
+const ClientController = require('./client/clientController')
 
 const createApp = () => {
     return new App({
@@ -17,6 +18,7 @@ const createApp = () => {
             new HealthCheck('/health', 'api-health'),
             new AuthController('/auth', 'api-auth')
         ],
+        clientController: new ClientController('/', 'client-routes'),
         middlewares: [
             express.json(),
             morgan(),

@@ -5,7 +5,7 @@ const { MongoConnect } = require('./common/db/connect');
 const logger = require('./middlewares/loggers/winston')
 
 class App {
-    constructor({ routes = [], middlewares = [], passportService, errorHandler }) {
+    constructor({ routes = [], clientController, middlewares = [], passportService, errorHandler }) {
         this.app = express();
         this.server = createServer(this.app);
         this.port = configuration.globals.port;
@@ -14,7 +14,7 @@ class App {
         this.dbConnection()
         this.passportService(passportService);
         this.middlewares(middlewares);
-        this.routes(routes);
+        this.routes(routes, clientController);
         this.setViewEngine();
         this.setErrorHandler();
     }
@@ -31,10 +31,12 @@ class App {
             .catch((err) => logger.fatal(err))
     }
 
-    routes(controllers = []) {
+    routes(controllers = [], clientController) {
         controllers.forEach(controller => {
             this.app.use(configuration.api.apiVersion, controller.router)
         })
+
+        this.app.use('/', clientController.router)
     }
 
     middlewares(middlewares = []) {
@@ -54,6 +56,7 @@ class App {
     setViewEngine() {
         this.app.set('views', configuration.views.viewsDir)
         this.app.set('view engine', configuration.views.viewEngine)
+        this.app.use('/static', express.static(configuration.views.staticDir))
     }
 }
 

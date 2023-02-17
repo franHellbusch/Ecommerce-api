@@ -5,6 +5,9 @@ const handleMongoError = (err) => {
     if (err.name == 'CastError') {
         return createError(err, 400)
     }
+    if (err.name == 'ValidationError') {
+        return createError(err, httpStatus.BAD_REQUEST)
+    }
     if (err.code == 11000) {
         return createError(err, httpStatus.CONFLICT)
     }

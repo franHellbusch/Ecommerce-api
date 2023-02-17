@@ -13,7 +13,7 @@ describe('Authentication route', () => {
     })
 
     test('Should successfully register user', async () => {
-        const response = await request(app.server)
+        await request(app.server)
         .post(`${configuration.api.apiVersion}/auth/register`)
         .send({
             email: 'emailtest@gmail.com',
@@ -23,10 +23,7 @@ describe('Authentication route', () => {
             username: 'user test',
             age: 18
         })
-        .expect(201)
-
-        expect(response.body).toHaveProperty('success', true)
-        expect(response.body).toHaveProperty('user')
+        .expect(302)
     })
 
     test('Should successfully logout user', async () => {
@@ -39,16 +36,13 @@ describe('Authentication route', () => {
     })
 
     test('Should successfully login user', async () => {
-        const response = await request(app.server)
+        await request(app.server)
         .post(`${configuration.api.apiVersion}/auth/login`)
         .send({
             email: 'emailtest@gmail.com',
             password: 'passwordtest'
         })
-        .expect(200)
-        
-        expect(response.body).toHaveProperty('success', true)
-        expect(response.body).toHaveProperty('user')
+        .expect(302)
     })
 })
 
@@ -62,7 +56,7 @@ describe('Authentication route ERROR', () => {
         server.close()
     })
 
-    test('Should be a bad request error', async () => {
+    test('Should be a Missing credentials error', async () => {
         const response = await request(app.server)
         .post(`${configuration.api.apiVersion}/auth/login`)
         .send({
@@ -71,19 +65,46 @@ describe('Authentication route ERROR', () => {
         .expect(400)
 
         expect(response.body).toHaveProperty('success', false)
-        expect(response.body).toHaveProperty('message', 'Bad Request')
+        expect(response.body).toHaveProperty('message', 'Missing credentials')
     })
 
-    test('Should be a Unauthorized error', async () => {
+    test('Should be an Invalid Password error', async () => {
         const response = await request(app.server)
         .post(`${configuration.api.apiVersion}/auth/login`)
         .send({
             email: 'noexiste@mierror.com',
             password: '123'
         })
-        .expect(401)
+        .expect(400)
 
         expect(response.body).toHaveProperty('success', false)
-        expect(response.body).toHaveProperty('message', 'Unauthorized')
+        expect(response.body).toHaveProperty('message', 'Invalid password, must be at least 8 characters')
+    })
+
+    test('Should be a User already exist error', async () => {
+        const response = await request(app.server)
+        .post(`${configuration.api.apiVersion}/auth/register`)
+        .send({
+            email: 'emailtest@gmail.com',
+            password: 'passwordtest',
+        })
+        .expect(409)
+
+        expect(response.body).toHaveProperty('message', 'User already exist')
+    })
+
+    test('Should a Mongo missing contect error', async () => {
+        const response = await request(app.server)
+        .post(`${configuration.api.apiVersion}/auth/register`)
+        .send({
+            email: 'erroremail@gmail.com',
+            password: 'passwordtest',
+            name: 'user',
+            lastName: 'test',
+            username: 'user test',
+        })
+        .expect(400)
+
+        expect(response.body).toHaveProperty('message', 'user validation failed: age: Path `age` is required.')
     })
 })
