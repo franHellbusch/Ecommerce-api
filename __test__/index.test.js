@@ -5,7 +5,7 @@ const configuration = require('../src/api/common/configuration')
 
 describe('Server running test', () => {
     test('Not found route', async () => {
-        const response = await request(app.server).get('/')
+        const response = await request(app.server).get('/notfoundroute')
         
         expect(response.status).toBe(status.NOT_FOUND)
     })
