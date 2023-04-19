@@ -10,7 +10,7 @@
     - [documentation](https://mongoosejs.com/docs/guide.html)
 - **EJS**
     - [documentation](https://ejs.co/#docs)
-- Fo testing - **Jest**
+- For testing - **Jest**
     - [documentation](https://jestjs.io/)
 
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
